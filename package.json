@@ -1,0 +1,23 @@
+{
+  "name": "twitter",
+  "version": "1.0.0",
+  "description": "",
+  "main": "myApp.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node myApp.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/raj713335/Twitter.git"
+  },
+  "author": "raj713335",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/raj713335/Twitter/issues"
+  },
+  "homepage": "https://github.com/raj713335/Twitter#readme",
+  "dependencies": {
+    "colors": "^1.4.0"
+  }
+}
