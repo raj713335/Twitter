@@ -27,4 +27,5 @@ const displayContent = (req, res) => {
     res.end();
 }
 
+
 module.exports = displayContent;
