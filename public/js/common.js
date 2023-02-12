@@ -52,7 +52,7 @@ $("#replyModal").on("show.bs.modal", (event) => {
     $("#submitReplyButton").data("id", postId);
 
     $.get("/api/posts/"+ postId, results => {
-        outputPosts(results, $("#origialPostContainer"));
+        outputPosts(results.postData, $("#origialPostContainer"));
     })
 })
 
@@ -103,6 +103,15 @@ $(document).on("click", ".retweetButton", (event) => {
     })
 })
 
+$(document).on("click", ".post", (event) => {
+    var element = $(event.target);
+    var postId = getPostIdFromElement(element);
+
+    if(postId !== undefined && !element.is("button")){
+        window.location.href ='/posts/' + postId;
+    }
+})
+
 function getPostIdFromElement(element) {
     var isRoot = element.hasClass("post");
     var rootElement = isRoot == true ? element : element.closest(".post");
@@ -114,7 +123,7 @@ function getPostIdFromElement(element) {
 }
 
 
-function createPostHtml(postData) {
+function createPostHtml(postData, largeFont = false) {
 
     if(postData == null) return alert("post Data is null");
 
@@ -133,6 +142,7 @@ function createPostHtml(postData) {
 
     var likeButtonActiveClass = postData.likes.includes(userLoggedIn._id) ? "active" : "";
     var retweetButtonActiveClass = postData.retweetUsers.includes(userLoggedIn._id) ? "active" : "";
+    var largeFontClass = largeFont ? "largeFont" : "";
 
     var retweetText = '';
 
@@ -145,7 +155,7 @@ function createPostHtml(postData) {
 
     var replyFlag = "";
 
-    if(postData.replyTo) {
+    if(postData.replyTo && postData.replyTo._id) {
 
         if(!postData.replyTo._id){
             return alert("Reply to isn't populated");
@@ -160,7 +170,7 @@ function createPostHtml(postData) {
                     </div>`;
     }
 
-    return `<div class='post' data-id='${postData._id}'>
+    return `<div class='post ${largeFontClass}' data-id='${postData._id}'>
                 <div class='postActionContainer'>
                     ${retweetText}
                 </div>
@@ -255,4 +265,23 @@ function outputPosts(results, container) {
     if (results.length == 0) {
         container.append("<span class='noResults'>Nothing to Show. </span>")
     }
+}
+
+
+function outputPostsWithReplies(results, container) {
+
+    container.html("");
+
+    if (results.replyTo !== undefined && results.replyTo._id !== undefined){
+        var html = createPostHtml(results.replyTo);
+        container.append(html);
+    }
+
+    var mainPostHtml = createPostHtml(results.postData, true)
+    container.append(mainPostHtml);
+
+    results.replies.forEach(result => {
+        var html = createPostHtml(result)
+        container.append(html);
+    });
 }
