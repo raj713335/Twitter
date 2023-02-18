@@ -9,7 +9,7 @@ block content
 
             input(type="text", name="firstName", placeholder="First Name", value=firstName required="")
             input(type="text", name="lastName", placeholder="Last Name", value=lastName required="")
-            input(type="text", name="userName", placeholder="User Name", value=userName required="")
+            input(type="text", name="username", placeholder="User Name", value=userName required="")
             input(type="email", name="email", placeholder="Email", value=email required="")
             input#password(type="password", name="password", placeholder="Password", required="")
             input#passwordConf(type="password", name="passwordConf", placeholder="Confirm Password", required="")
@@ -24,7 +24,7 @@ block content
 
         function validateForm() {
             if(passwordField.value != passwordConfirmField.value) {
-                alert("Password do not match. Please try again.")
+                alert("Passwords do not match. Please try again.")
             }
             else {
                 form.submit(); 

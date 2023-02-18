@@ -1,16 +1,16 @@
-
 :root {
     --blue: #1FA2F1;
     --blueLight: #9BD1F9;
-    --buttonhoverBg: #d4edff;
+    --blueBackground: rgba(212, 237, 255, 0.6);
+    --buttonHoverBg: #d4edff;
     --lightGrey: rgb(230, 236, 240);
     --spacing: 15px;
     --greyText: rgb(101, 119, 134);
-    --greyButtonText: rgba(0, 0, 0, 0.34);
-    --red: rgb(226, 34, 94);
-    --redBackground: rgba(226, 34, 94, 0.1);
-    --green: rgb(23, 191, 99);
-    --greenBackground: rgba(23, 121, 99, 0.1);
+    --greyButtonText: rgba(0,0,0,0.34);
+    --red: rgb(226,34,94);
+    --redBackground: rgba(226,34,94,0.1);
+    --green: rgb(23,191,99);
+    --greenBackground: rgba(23,191,99,0.1);
 }
 
 * {
@@ -55,7 +55,7 @@ nav a.blue {
 }
 
 nav a:hover {
-    background-color: var(--buttonhoverBg);
+    background-color: var(--buttonHoverBg);
     color: var(--blue);
     border-radius: 50%;
 }
@@ -66,17 +66,17 @@ button {
     color: var(--greyButtonText);
 }
 
+button i,
+button span {
+    pointer-events: none;
+}
+
 .mainSectionContainer {
-    padding: 0;
+    padding:  0;
     border-left: 1px solid var(--lightGrey);
     border-right: 1px solid var(--lightGrey);
     display: flex;
     flex-direction: column;
-}
-
-button i,
-button span {
-    pointer-events: none;
 }
 
 .titleContainer {
@@ -95,7 +95,7 @@ button span {
 .postFormContainer {
     display: flex;
     padding: var(--spacing);
-    border-bottom: 10px solid var(--lightGrey);
+    border-bottom: 10px solid rgb(230, 236, 240);
     flex-shrink: 0;
 }
 
@@ -114,7 +114,7 @@ button span {
     height: 50px;
 }
 
-.userImageContainer img{
+.userImageContainer img {
     width: 100%;
     border-radius: 50%;
     background-color: white;
@@ -167,7 +167,7 @@ button span {
 
 .username,
 .date {
-    color: var(--greyText);
+    color: var(--greyText)
 }
 
 .displayName {
@@ -207,25 +207,25 @@ button span {
     color: var(--red);
 }
 
+.postButtonContainer.red button:hover {
+    color: var(--red);
+    background-color: var(--redBackground)
+}
+
 .postButtonContainer.green button.active {
     color: var(--green);
 }
 
-.postButtonContainer.red button:hover {
-    color: var(--red);
-    background-color: var(--redBackground);
-}
-
 .postButtonContainer.green button:hover {
     color: var(--green);
-    background-color: var(--greenBackground);
+    background-color: var(--greenBackground)
 }
 
 .postActionContainer {
     padding-left: 35px;
     font-size: 13px;
     color: var(--greyText);
-    margin-bottom: var(--spacing);
+    margin-bottom: 5px;
 }
 
 .replyFlag {
@@ -239,9 +239,9 @@ button span {
 .post.largeFont .postBody,
 .post.largeFont .postFooter {
     font-size: 23px;
-} 
+}
 
-.postContentContainer .header{
+.postContentContainer .header {
     display: flex;
 }
 
@@ -249,3 +249,100 @@ button span {
     flex: 1;
 }
 
+.errorMessage {
+    padding: var(--spacing);
+}
+
+.coverPhotoContainer {
+    height: 180px;
+    background-color: var(--blue);
+    position: relative;
+}
+
+.profileHeaderContainer .userImageContainer {
+    width: 132px;
+    height: 132px;
+    margin-left: var(--spacing);
+    position: absolute;
+    bottom: -66px;
+}
+
+.profileHeaderContainer .userImageContainer img {
+    border: 4px solid #fff;
+}
+
+.profileHeaderContainer .profileButtonsContainer {
+    text-align: right;
+    padding: var(--spacing);
+    min-height: 66px;
+}
+
+.profileButton,
+.followButton {
+    border: 1px solid var(--blue);
+    color: var(--blue);
+    font-weight: bold;
+    padding: 5px 15px;
+    border-radius: 60px;
+    display: inline-block;
+    margin-left: var(--spacing);
+}
+
+.profileButton:hover,
+.followButton:hover {
+    background-color: var(--blueBackground);
+}
+
+.followButton.following {
+    background-color: var(--blue);
+    color: #fff;
+}
+
+.profileHeaderContainer .userDetailsContainer {
+    display: flex;
+    flex-direction: column;
+    padding: 0 var(--spacing);
+}
+
+.followersContainer .value {
+    font-weight: bold;
+    margin-right: 5px;
+}
+
+.followersContainer span:not(.value) {
+    color: var(--greyText);
+}
+
+.followersContainer a {
+    margin-right: 15px;
+}
+
+.followersContainer a:hover {
+    border-bottom: 1px solid #000;
+}
+
+.tabsContainer {
+    display: flex;
+    border-bottom: 1px solid var(--lightGrey);
+    flex-shrink: 0;
+}
+
+.tab {
+    flex: 1;
+    height: 52px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--greyText);
+    font-weight: bold;
+}
+
+.tab.active {
+    color: var(--blue);
+    border-bottom: 2px solid var(--blue);
+}
+
+.tab:hover {
+    color: var(--blue);
+    background-color: var(--blueBackground);
+}

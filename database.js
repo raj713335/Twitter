@@ -13,10 +13,10 @@ class Database {
     connect() {
         mongoose.connect("mongodb+srv://raj713335:s2hC8E79Df@twitterclonecluster.vl3kyhh.mongodb.net/TwitterCloneDB?retryWrites=true&w=majority")
         .then(() => {
-            console.log("databse connection successful");
+            console.log("database connection successful");
         })
         .catch((err) => {
-            console.log("databse connection error "+ err);
+            console.log("database connection error "+ err);
         })
     }
 }

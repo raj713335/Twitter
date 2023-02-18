@@ -3,7 +3,7 @@ $("#postTextarea, #replyTextarea").keyup(event => {
     var value = textbox.val().trim();
 
     var isModal = textbox.parents(".modal").length == 1;
-
+    
     var submitButton = isModal ? $("#submitReplyButton") : $("#submitPostButton");
 
     if(submitButton.length == 0) return alert("No submit button found");
@@ -16,7 +16,7 @@ $("#postTextarea, #replyTextarea").keyup(event => {
     submitButton.prop("disabled", false);
 })
 
-$("#submitPostButton, #submitReplyButton").click((event) => {
+$("#submitPostButton, #submitReplyButton").click(() => {
     var button = $(event.target);
 
     var isModal = button.parents(".modal").length == 1;
@@ -28,11 +28,11 @@ $("#submitPostButton, #submitReplyButton").click((event) => {
 
     if (isModal) {
         var id = button.data().id;
-        if (id == null) return alert("Button id is null");
+        if(id == null) return alert("Button id is null");
         data.replyTo = id;
     }
 
-    $.post("/api/posts", data, (postData) => {
+    $.post("/api/posts", data, postData => {
 
         if(postData.replyTo) {
             location.reload();
@@ -51,30 +51,32 @@ $("#replyModal").on("show.bs.modal", (event) => {
     var postId = getPostIdFromElement(button);
     $("#submitReplyButton").data("id", postId);
 
-    $.get("/api/posts/"+ postId, results => {
-        outputPosts(results.postData, $("#origialPostContainer"));
+    $.get("/api/posts/" + postId, results => {
+        outputPosts(results.postData, $("#originalPostContainer"));
     })
 })
 
-$("#replyModal").on("hidden.bs.modal", () => $("#origialPostContainer").html(""));
+$("#replyModal").on("hidden.bs.modal", () => $("#originalPostContainer").html(""));
 
-$("#deletedPostModal").on("show.bs.modal", (event) => {
+$("#deletePostModal").on("show.bs.modal", (event) => {
     var button = $(event.relatedTarget);
     var postId = getPostIdFromElement(button);
-    $("#deletedPostButton").data("id", postId);
+    $("#deletePostButton").data("id", postId);
 })
 
-$("#deletedPostButton").click((event) => {
-    var id = $(event.target).data("id");
+$("#deletePostButton").click((event) => {
+    var postId = $(event.target).data("id");
 
     $.ajax({
-        url: `/api/posts/${id}`,
+        url: `/api/posts/${postId}`,
         type: "DELETE",
         success: (data, status, xhr) => {
+
             if(xhr.status != 202) {
                 alert("could not delete post");
                 return;
             }
+            
             location.reload();
         }
     })
@@ -83,13 +85,14 @@ $("#deletedPostButton").click((event) => {
 $(document).on("click", ".likeButton", (event) => {
     var button = $(event.target);
     var postId = getPostIdFromElement(button);
-
-    if (postId == undefined) return;
+    
+    if(postId === undefined) return;
 
     $.ajax({
         url: `/api/posts/${postId}/like`,
         type: "PUT",
         success: (postData) => {
+            
             button.find("span").text(postData.likes.length || "");
 
             if(postData.likes.includes(userLoggedIn._id)) {
@@ -98,20 +101,22 @@ $(document).on("click", ".likeButton", (event) => {
             else {
                 button.removeClass("active");
             }
+
         }
     })
+
 })
 
 $(document).on("click", ".retweetButton", (event) => {
     var button = $(event.target);
     var postId = getPostIdFromElement(button);
-
-    if (postId == undefined) return;
+    
+    if(postId === undefined) return;
 
     $.ajax({
         url: `/api/posts/${postId}/retweet`,
         type: "POST",
-        success: (postData) => {
+        success: (postData) => {            
             button.find("span").text(postData.retweetUsers.length || "");
 
             if(postData.retweetUsers.includes(userLoggedIn._id)) {
@@ -120,18 +125,20 @@ $(document).on("click", ".retweetButton", (event) => {
             else {
                 button.removeClass("active");
             }
+
         }
     })
+
 })
 
 $(document).on("click", ".post", (event) => {
     var element = $(event.target);
     var postId = getPostIdFromElement(element);
 
-    if(postId !== undefined && !element.is("button")){
-        window.location.href ='/posts/' + postId;
+    if(postId !== undefined && !element.is("button")) {
+        window.location.href = '/posts/' + postId;
     }
-})
+});
 
 function getPostIdFromElement(element) {
     var isRoot = element.hasClass("post");
@@ -143,18 +150,17 @@ function getPostIdFromElement(element) {
     return postId;
 }
 
-
 function createPostHtml(postData, largeFont = false) {
 
-    if(postData == null) return alert("post Data is null");
+    if(postData == null) return alert("post object is null");
 
     var isRetweet = postData.retweetData !== undefined;
-    var retweetedBy = isRetweet ? postData.postedBy.userName : null;
+    var retweetedBy = isRetweet ? postData.postedBy.username : null;
     postData = isRetweet ? postData.retweetData : postData;
-
+    
     var postedBy = postData.postedBy;
 
-    if ( postedBy._id === undefined ) {
+    if(postedBy._id === undefined) {
         return console.log("User object not populated");
     }
 
@@ -166,34 +172,33 @@ function createPostHtml(postData, largeFont = false) {
     var largeFontClass = largeFont ? "largeFont" : "";
 
     var retweetText = '';
-
-    if (isRetweet) {
+    if(isRetweet) {
         retweetText = `<span>
                         <i class='fas fa-retweet'></i>
-                        Retweeted by <a href='/profile/${retweetedBy}'>@${retweetedBy}</a>
-                        </span>`
+                        Retweeted by <a href='/profile/${retweetedBy}'>@${retweetedBy}</a>    
+                    </span>`
     }
 
     var replyFlag = "";
-
     if(postData.replyTo && postData.replyTo._id) {
-
-        if(!postData.replyTo._id){
-            return alert("Reply to isn't populated");
+        
+        if(!postData.replyTo._id) {
+            return alert("Reply to is not populated");
         }
         else if(!postData.replyTo.postedBy._id) {
             return alert("Posted by is not populated");
         }
 
-        var replyToUsername = postData.replyTo.postedBy.userName;
+        var replyToUsername = postData.replyTo.postedBy.username;
         replyFlag = `<div class='replyFlag'>
-                        Replying to <a href='/profile/${replyToUsername}'>@${replyToUsername}</a>
+                        Replying to <a href='/profile/${replyToUsername}'>@${replyToUsername}<a>
                     </div>`;
+
     }
 
     var buttons = "";
-    if (postData.postedBy._id == userLoggedIn._id){
-        buttons = `<button data-id="${postData._id}" data-toggle="modal" data-target="#deletedPostModal"><i class='fas fa-times'></i></button>`
+    if (postData.postedBy._id == userLoggedIn._id) {
+        buttons = `<button data-id="${postData._id}" data-toggle="modal" data-target="#deletePostModal"><i class='fas fa-times'></i></button>`;
     }
 
     return `<div class='post ${largeFontClass}' data-id='${postData._id}'>
@@ -206,8 +211,8 @@ function createPostHtml(postData, largeFont = false) {
                     </div>
                     <div class='postContentContainer'>
                         <div class='header'>
-                            <a href='/profile/${postedBy.userName}' class='displayName'>${displayName}</a>
-                            <span class='username'>@${postedBy.userName}</span>
+                            <a href='/profile/${postedBy.username}' class='displayName'>${displayName}</a>
+                            <span class='username'>@${postedBy.username}</span>
                             <span class='date'>${timestamp}</span>
                             ${buttons}
                         </div>
@@ -239,7 +244,6 @@ function createPostHtml(postData, largeFont = false) {
             </div>`;
 }
 
-
 function timeDifference(current, previous) {
 
     var msPerMinute = 60 * 1000;
@@ -251,17 +255,17 @@ function timeDifference(current, previous) {
     var elapsed = current - previous;
 
     if (elapsed < msPerMinute) {
-        if (elapsed/1000 < 30 ) return "Just now";
-
+        if(elapsed/1000 < 30) return "Just now";
+        
         return Math.round(elapsed/1000) + ' seconds ago';   
     }
 
     else if (elapsed < msPerHour) {
-        return Math.round(elapsed/msPerMinute) + ' minutes ago';   
+         return Math.round(elapsed/msPerMinute) + ' minutes ago';   
     }
 
     else if (elapsed < msPerDay ) {
-        return Math.round(elapsed/msPerHour ) + ' hours ago';   
+         return Math.round(elapsed/msPerHour ) + ' hours ago';   
     }
 
     else if (elapsed < msPerMonth) {
@@ -290,17 +294,15 @@ function outputPosts(results, container) {
     });
 
     if (results.length == 0) {
-        container.append("<span class='noResults'>Nothing to Show. </span>")
+        container.append("<span class='noResults'>Nothing to show.</span>")
     }
 }
 
-
 function outputPostsWithReplies(results, container) {
-
     container.html("");
 
-    if (results.replyTo !== undefined && results.replyTo._id !== undefined){
-        var html = createPostHtml(results.replyTo);
+    if(results.replyTo !== undefined && results.replyTo._id !== undefined) {
+        var html = createPostHtml(results.replyTo)
         container.append(html);
     }
 
