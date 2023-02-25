@@ -174,7 +174,7 @@ router.delete("/:id", (req, res, next) => {
 router.put("/:id", async (req, res, next) => {
 
     if(req.body.pinned !== undefined) {
-        await Post.updateMany({postedBy: req.session.user}, {pinned: false})
+        await Post.updateMany({postedBy: req.session.user }, { pinned: false })
         .catch(error => {
             console.log(error);
             res.sendStatus(400);
