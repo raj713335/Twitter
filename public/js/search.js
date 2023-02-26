@@ -12,7 +12,7 @@ $("#searchBox").keydown((event) => {
             $(".resultsContainer").html("");
         }
         else {
-            search(value, searchType)
+            search(value, searchType);
         }
     }, 1000)
 

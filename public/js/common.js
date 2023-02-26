@@ -235,47 +235,47 @@ $("#coverPhotoButton").click(() => {
     })
 })
 
-$("#userSearchTextbox").keydown((event) => {
-    clearTimeout(timer);
-    var textbox = $(event.target);
-    var value = textbox.val();
+// $("#userSearchTextbox").keydown((event) => {
+//     clearTimeout(timer);
+//     var textbox = $(event.target);
+//     var value = textbox.val();
 
-    if (value == "" && event.keyCode == 8) {
-        // remove user from selection
-        selectedUsers.pop();
-        updateSelectedUsersHtml();
-        $(".resultsContainer").html("");
+//     if (value == "" && event.keyCode == 8) {
+//         // remove user from selection
+//         selectedUsers.pop();
+//         updateSelectedUsersHtml();
+//         $(".resultsContainer").html("");
 
-        if(selectedUsers.length == 0) {
-            $("#createChatButton").prop("disabled", true);
-        }
+//         if(selectedUsers.length == 0) {
+//             $("#createChatButton").prop("disabled", true);
+//         }
 
-        return;
-    }
+//         return;
+//     }
 
-    timer = setTimeout(() => {
-        value = textbox.val().trim();
+//     timer = setTimeout(() => {
+//         value = textbox.val().trim();
 
-        if(value == "") {
-            $(".resultsContainer").html("");
-        }
-        else {
-            searchUsers(value);
-        }
-    }, 1000)
+//         if(value == "") {
+//             $(".resultsContainer").html("");
+//         }
+//         else {
+//             searchUsers(value);
+//         }
+//     }, 1000)
 
-})
+// })
 
-$("#createChatButton").click(() => {
-    var data = JSON.stringify(selectedUsers);
+// $("#createChatButton").click(() => {
+//     var data = JSON.stringify(selectedUsers);
 
-    $.post("/api/chats", { users: data }, chat => {
+//     $.post("/api/chats", { users: data }, chat => {
 
-        if(!chat || !chat._id) return alert("Invalid response from server.");
+//         if(!chat || !chat._id) return alert("Invalid response from server.");
 
-        window.location.href = `/messages/${chat._id}`;
-    })
-})
+//         window.location.href = `/messages/${chat._id}`;
+//     })
+// })
 
 $("#userSearchTextbox").keydown((event) => {
     clearTimeout(timer);
@@ -708,4 +708,13 @@ function getOtherChatUsers(users) {
     if(users.length == 1) return users;
 
     return users.filter(user => user._id != userLoggedIn._id);
+}
+
+function messageReceived(newMessage) {
+    if($(".chatContainer").length == 0) {
+        // Show popup notification
+    }
+    else {
+        addChatMessageHtml(newMessage);
+    }
 }
