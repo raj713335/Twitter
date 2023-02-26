@@ -39,6 +39,7 @@ router.get("/", async (req, res, next) => {
             objectIds.push(req.session.user._id);
             searchObj.postedBy = { $in: objectIds };
         }
+        
         delete searchObj.followingOnly;
     }
 
@@ -180,6 +181,7 @@ router.put("/:id", async (req, res, next) => {
             res.sendStatus(400);
         })
     }
+
     Post.findByIdAndUpdate(req.params.id, req.body)
     .then(() => res.sendStatus(204))
     .catch(error => {

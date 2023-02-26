@@ -133,6 +133,4 @@ router.post("/coverPhoto", upload.single("croppedImage"), async (req, res, next)
 
 });
 
-
-
 module.exports = router;
