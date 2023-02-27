@@ -8,7 +8,7 @@ $("#searchBox").keydown((event) => {
     timer = setTimeout(() => {
         value = textbox.val().trim();
 
-        if(value == ""){
+        if(value == "") {
             $(".resultsContainer").html("");
         }
         else {

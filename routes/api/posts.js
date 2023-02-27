@@ -90,7 +90,7 @@ router.post("/", async (req, res, next) => {
         newPost = await Post.populate(newPost, { path: "replyTo" })
 
         if(newPost.replyTo !== undefined) {
-            await Notification.insertNotification(newPost.replyTo.postedBy, req.session._id, "reply", newPost._id);
+            await Notification.insertNotification(newPost.replyTo.postedBy, req.session.user._id, "reply", newPost._id);
         }
 
         res.status(201).send(newPost);
