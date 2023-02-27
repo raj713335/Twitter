@@ -31,7 +31,7 @@ router.post("/", async (req, res, next) => {
         var chat = await Chat.findByIdAndUpdate(req.body.chatId, { latestMessage: message })
         .catch(error => console.log(error));
 
-        insertNotificatios(chat, message);
+        insertNotifications(chat, message);
         
 
         res.status(201).send(message);
@@ -42,7 +42,7 @@ router.post("/", async (req, res, next) => {
     })
 })
 
-function insertNotificatios(chat, message) {
+function insertNotifications(chat, message) {
     chat.users.forEach(userId => {
         if(userId == message.sender._id.toString()) return;
 
