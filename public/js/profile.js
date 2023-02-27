@@ -10,7 +10,7 @@ $(document).ready(() => {
 
 function loadPosts() {
     $.get("/api/posts", { postedBy: profileUserId, pinned: true }, results => {
-        outputPinnedPosts(results, $(".pinnedPostContainer"));
+        outputPinnedPost(results, $(".pinnedPostContainer"));
     })
 
     $.get("/api/posts", { postedBy: profileUserId, isReply: false }, results => {
@@ -24,9 +24,8 @@ function loadReplies() {
     })
 }
 
-function outputPinnedPosts(results, container) {
-
-    if(results.length == 0){
+function outputPinnedPost(results, container) {
+    if(results.length == 0) {
         container.hide();
         return;
     }
@@ -37,5 +36,4 @@ function outputPinnedPosts(results, container) {
         var html = createPostHtml(result)
         container.append(html);
     });
-
 }

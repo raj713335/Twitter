@@ -32,7 +32,6 @@ router.post("/", async (req, res, next) => {
         .catch(error => console.log(error));
 
         insertNotifications(chat, message);
-        
 
         res.status(201).send(message);
     })
@@ -48,7 +47,6 @@ function insertNotifications(chat, message) {
 
         Notification.insertNotification(userId, message.sender._id, "newMessage", message.chat._id);
     })
-
 }
 
 module.exports = router;

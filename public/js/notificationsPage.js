@@ -37,8 +37,6 @@ function getNotificationText(notification) {
 
     var userFrom = notification.userFrom;
 
-    console.log(userFrom);
-
     if(!userFrom.firstName || !userFrom.lastName) {
         return alert("user from data not populated");
     }
