@@ -48,7 +48,6 @@ router.get("/", async (req, res, next) => {
     })
     .catch(error => {
         console.log(error);
-        console.log("Error Occured");
         res.sendStatus(400);
     })
 })

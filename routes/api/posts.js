@@ -125,7 +125,7 @@ router.put("/:id/like", async (req, res, next) => {
     })
 
     if(!isLiked) {
-        await Notification.insertNotification(post.postedBy, userId, "postlike", post._id);
+        await Notification.insertNotification(post.postedBy, userId, "postLike", post._id);
     }
 
 
