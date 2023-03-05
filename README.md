@@ -2,11 +2,12 @@
 <h1 align="center"><a href="">Twitter</a></h1>
 
 ## Features
-- User Signin/Registraion.
-- User can post tweet, retweet, like, comment, follow other users.
-- User can send message, create group chats and get message notification.
-- User profile page to view posted tweets, pinned tweets, following and followers and change profile picture.
-- Using Socket.io to get real time message, and notification to the user.
+- User Sign-in/Registration.
+- Users can post tweets, retweet, like, comment, and follow other users.
+- User can send messages, create group chats and get message notifications.
+- User profile page to view posted tweets, pinned tweets, following and followers, and change profile picture.
+- Using Socket.io to get the real-time message and notifications to the user.
+
 
 ### 1. Clone/Download the Repository
 
